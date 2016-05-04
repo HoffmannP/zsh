@@ -1,0 +1,5 @@
+#compdef janitor
+
+_arguments \
+    "1:Command:(backup calc init test update)" \
+    "*:Parameter:(--tid --region --stufe --debug --testing)"

@@ -1,0 +1,16 @@
+# autoload -Uz promptinit
+# promptinit
+# prompt adam3 8bit
+
+if [[ $(hostname) == "berli" ]]; then
+	color1="yellow"
+	color2="green"
+	color3="yellow"
+	color4="white";
+else
+	color1="cyan"
+	color2="green"
+	color3="cyan"
+	color4="white";
+fi
+source $HOME/.zsh/prompt_adam2_setup 8bit $color1 $color2 $color3 $color4
