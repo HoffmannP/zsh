@@ -102,7 +102,7 @@ alias atmo="play -n -c1 synth whitenoise band -n 100 20 band -n 50 20 gain +30 f
 alias -g update-upgrade="update && sudo apt-get -y dist-upgrade"
 
 # add custom completion scripts
-fpath+="$(dirname $0)/completion"
+fpath+="$HOME/.zsh/completion"
 autoload -U compinit && compinit
 
 # wakeup Server
