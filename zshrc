@@ -114,5 +114,10 @@ alias mine="sudo chown --changes --recursive $(id -un):$(id -gn)"
 # header anzeigen
 alias -g _header="tee >(tput smso; head -1 | cat; tput rmso) | cat"
 
+# create a new project
+function newProject {
+	git clone https://github.com/HoffmannP/skeleton.git . && ./init.sh
+}
+
 # set Options for LESS
 LESS="-FKRX"
