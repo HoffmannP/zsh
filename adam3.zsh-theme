@@ -31,7 +31,8 @@ prompt_adam3_setup () {
   # Color scheme
   setColorLine="%b%{$FG[055]%}"
 
-  colorPath="%b%{$FG[237]%}"
+  # colorPath="%b%{$FG[237]%}"
+  colorPath="%b%{$FG[226]%}"
   hostColor="$(printf %03d $(hostname | md5sum | sed -r 's/^.*(..)  -/0x\1/'))"
   colorUser="%b%{$FG[$hostColor]%}"
 
