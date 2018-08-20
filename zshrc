@@ -94,6 +94,8 @@ tabs 4 > /dev/null
 # GPG homedir
 export GNUPGHOME=/home/ber/Dropbox/Schluessel/gpg-conf
 
+# short for exit
+alias xit=exit
 # play atmospheriy sound
 alias atmo="play -n -c1 synth whitenoise band -n 100 20 band -n 50 20 gain +30 fade h 1 86400 1"
 
@@ -122,9 +124,98 @@ function newProject {
 }
 
 # set Options for LESS
-LESS="-FKRX"
+LESS="-FKrX"
 
 alias aus="sudo poweroff"
 alias beKatja="sudo macchanger -m 50:F0:D3:14:84:5A wlp3s0"
+
+# Keybindings
+# F1
+function list-dir {
+	ls -l
+	echo
+	zle reset-prompt
+}
+zle -N list-dir
+bindkey '^[OP' list-dir
+
+# F4
+function exit-terminal {
+	clearLines=$[(LINES - 7) / 2];
+	echo $clearLines
+
+	clear
+	for ((i = 0; i < $clearLines; i++)); do
+		echo ""
+	done
+	banner '         3'
+	sleep 1s
+
+	clear
+	for ((i = 0; i < $clearLines; i++)); do
+		echo ""
+	done
+	banner '         2'
+	sleep 1s
+
+	clear
+	for ((i = 0; i < $clearLines; i++)); do
+		echo ""
+	done
+	banner '         1'
+	sleep 1s
+
+	clear
+	for ((i = 0; i < $clearLines; i++)); do
+		echo ""
+	done
+	banner '         *'
+	sleep .5s
+
+	clear
+	for ((i = 2; i < $clearLines; i++)); do
+		echo ""
+	done
+	banner '         .'
+	sleep .5s
+	
+	exit
+}
+zle -N exit-terminal
+bindkey '^[OS' exit-terminal
+
+# F5
+function exec-last-cmd {
+	$(fc -ln -1)
+	echo
+	zle reset-prompt
+}
+zle -N exec-last-cmd
+bindkey '^[[15~' exec-last-cmd
+
+# F6
+function show-time {
+	clear
+	for ((i=0; i<5; i++)); do
+		echo
+	done
+	banner '     '$(date +%R)
+	for ((i=0; i<5; i++)); do
+		echo
+	done
+	echo
+	zle reset-prompt
+}
+zle -N show-time
+bindkey '^[[17~' show-time
+
+# F8
+function run-as-sudo {
+	sudo $(fc -ln -1)
+	echo
+	zle reset-prompt
+}
+zle -N run-as-sudo
+bindkey '^[19' run-as-sudo
 
 source ~/.zsh/arbeit.sh
