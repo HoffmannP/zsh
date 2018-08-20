@@ -96,6 +96,7 @@ export GNUPGHOME=/home/ber/Dropbox/Schluessel/gpg-conf
 
 # short for exit
 alias xit=exit
+
 # play atmospheriy sound
 alias atmo="play -n -c1 synth whitenoise band -n 100 20 band -n 50 20 gain +30 fade h 1 86400 1"
 
@@ -178,7 +179,7 @@ function exit-terminal {
 	done
 	banner '         .'
 	sleep .5s
-	
+
 	exit
 }
 zle -N exit-terminal
@@ -217,5 +218,6 @@ function run-as-sudo {
 }
 zle -N run-as-sudo
 bindkey '^[19' run-as-sudo
+
 
 source ~/.zsh/arbeit.sh
