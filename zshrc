@@ -78,7 +78,9 @@ export EDITOR='nano'
 tabs 4 > /dev/null
 
 # settings for GO
-export GOPATH="/home/ber/Code/go"
+# export GOROOT="/home/ber/Code/go"
+# export GOBIN=$GOROOT"/bin"
+# export PATH=$PATH:$HOME/.bin:$GOBIN
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -99,7 +101,10 @@ alias xit=exit
 alias atmo="play -n -c1 synth whitenoise band -n 100 20 band -n 50 20 gain +30 fade h 1 86400 1"
 
 # apt-get update upgrade
-alias -g update-upgrade="update && sudo apt-get -y dist-upgrade"
+alias -g update-upgrade="apt update && apt upgrade"
+
+# ldap un-base64
+alias un64='awk '\''BEGIN{FS=":: ";c="base64 -d"}{if(/\w+:: /) {print $2 |& c; close(c,"to"); c |& getline $2; close(c); printf("%s: %s\n", $1, $2); next} print $0 }'\'''
 
 # add custom completion scripts
 fpath+="$HOME/.zsh/completion"
@@ -122,6 +127,8 @@ function newProject {
 # set Options for LESS
 LESS="-FKrX"
 
+alias aus="sudo poweroff"
+alias beKatja="sudo macchanger -m 50:F0:D3:14:84:5A wlp3s0"
 
 # Keybindings
 # F1
@@ -172,7 +179,7 @@ function exit-terminal {
 	done
 	banner '         .'
 	sleep .5s
-	
+
 	exit
 }
 zle -N exit-terminal
@@ -211,3 +218,6 @@ function run-as-sudo {
 }
 zle -N run-as-sudo
 bindkey '^[19' run-as-sudo
+
+
+source ~/.zsh/arbeit.sh
