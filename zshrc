@@ -81,6 +81,8 @@ tabs 4 > /dev/null
 # export GOROOT="/home/ber/Code/go"
 # export GOBIN=$GOROOT"/bin"
 # export PATH=$PATH:$HOME/.bin:$GOBIN
+# export GOPATH=/usr/share/go
+# export PATH=$PATH:${GOPATH//://bin:}/bin
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -97,6 +99,9 @@ export GNUPGHOME=/home/ber/Dropbox/Schluessel/gpg-conf
 # short for exit
 alias xit=exit
 
+# alias for rmate
+alias rsubl=rmate
+
 # play atmospheriy sound
 alias atmo="play -n -c1 synth whitenoise band -n 100 20 band -n 50 20 gain +30 fade h 1 86400 1"
 
@@ -108,7 +113,8 @@ alias un64='awk '\''BEGIN{FS=":: ";c="base64 -d"}{if(/\w+:: /) {print $2 |& c; c
 
 # add custom completion scripts
 fpath+="$HOME/.zsh/completion"
-autoload -U compinit && compinit
+autoload -Uz compinit && compinit -i
+autoload -Uz bashcompinit && bashcompinit
 
 # wakeup Server
 alias wakeup="/usr/bin/wakeonlan BC:5F:F4:79:71:18"
@@ -119,13 +125,19 @@ alias mine="sudo chown --changes --recursive $(id -un):$(id -gn)"
 # header anzeigen
 alias -g _header="tee >(tput smso; head -1 | cat; tput rmso) | cat"
 
+# debase64 for LDAP
+alias un64='awk '\''BEGIN{FS=":: ";c="base64 -d"}{if(/\w+:: /) {print $2 |& c; close(c,"to"); c |& getline $2; close(c); printf("%s: %s\n", $1, $2); next} print $0 }'\'''
+
 # create a new project
 function newProject {
 	git clone https://github.com/HoffmannP/skeleton.git . && ./init.sh
 }
 
 # set Options for LESS
-LESS="-FKrX"
+LESS="-FKRX"
+
+# local webserver
+alias webserver="docker run --name local-webserver --publish 80:80 --volume "/home/ber/Code:/usr/share/nginx/html:ro" -d nginx"
 
 alias aus="sudo poweroff"
 alias beKatja="sudo macchanger -m 50:F0:D3:14:84:5A wlp3s0"
@@ -219,5 +231,5 @@ function run-as-sudo {
 zle -N run-as-sudo
 bindkey '^[19' run-as-sudo
 
-
+hash -d kt="$HOME/Code/Kompetenztest/"
 source ~/.zsh/arbeit.sh
