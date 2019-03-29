@@ -122,13 +122,11 @@ alias mine="sudo chown --changes --recursive $(id -un):$(id -gn)"
 # header anzeigen
 alias -g _header="tee >(tput smso; head -1 | cat; tput rmso) | cat"
 
-<<<<<<< HEAD
 # docker get IP
 alias -g 'docker-ip'="docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'"
-=======
+
 # debase64 for LDAP
 alias un64='awk '\''BEGIN{FS=":: ";c="base64 -d"}{if(/\w+:: /) {print $2 |& c; close(c,"to"); c |& getline $2; close(c); printf("%s: %s\n", $1, $2); next} print $0 }'\'''
->>>>>>> origin/master
 
 # create a new project
 function newProject {
@@ -232,8 +230,6 @@ function run-as-sudo {
 }
 zle -N run-as-sudo
 bindkey '^[19' run-as-sudo
-
-<<<<<<< HEAD
 
 function letitsnow {
 	clear
