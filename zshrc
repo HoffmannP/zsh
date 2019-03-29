@@ -57,7 +57,7 @@ plugins=(colored-man-pages colorize command-not-found compleat docker git golang
 
 # User configuration
 
-  export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+# export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -78,9 +78,8 @@ export EDITOR='nano'
 tabs 4 > /dev/null
 
 # settings for GO
-# export GOROOT="/home/ber/Code/go"
-# export GOBIN=$GOROOT"/bin"
-# export PATH=$PATH:$HOME/.bin:$GOBIN
+export GOPATH="$HOME/Code/go"
+export PATH="$PATH:$GOPATH/bin"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -118,6 +117,9 @@ alias mine="sudo chown --changes --recursive $(id -un):$(id -gn)"
 
 # header anzeigen
 alias -g _header="tee >(tput smso; head -1 | cat; tput rmso) | cat"
+
+# docker get IP
+alias -g 'docker-ip'="docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'"
 
 # create a new project
 function newProject {
@@ -219,5 +221,16 @@ function run-as-sudo {
 zle -N run-as-sudo
 bindkey '^[19' run-as-sudo
 
+
+function letitsnow {
+	clear
+	while true
+	do
+		echo $LINES $COLUMNS $(($RANDOM%$COLUMNS))
+		sleep 0.1
+	done | gawk '{a[$3]=0;for(x in a) {o=a[x];a[x]=a[x]+1;printf "\033[%s;%sH ",o,x;printf "\033[%s;%sH*\033[0;0H",a[x],x;}}'
+}
+
+alias unlock="DISPLAY=:0 cinnamon-screensaver-command -d"
 
 source ~/.zsh/arbeit.sh
