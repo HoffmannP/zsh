@@ -20,7 +20,7 @@ EOF
 
 prompt_adam3_setup () {
   # Some can't be local
-  local topLeftCorner  middleToBottomChar bottomLeftCorner
+  local topLeftCorner  middleToBottomChar bottomLeftCorner bottomCorner
 
   topCornerChar='╭'
   bottomCornerChar='╰'
@@ -29,24 +29,25 @@ prompt_adam3_setup () {
   lineEnd='─╌┄┈'
 
   # Color scheme
-  setColorLine="%b%{$FG[055]%}"
-
-  # colorPath="%b%{$FG[237]%}"
-  colorPath="%b%{$FG[226]%}"
+  lineColor=055
+  pathColor=226 #237
   hostColor="$(printf %03d $(hostname | md5sum | sed -r 's/^.*(..)  -/0x\1/'))"
+
+  colorLine="%b%{$FG[$lineColor]%}"
+  colorPath="%b%{$FG[$pathColor]%}"
   colorUser="%b%{$FG[$hostColor]%}"
 
-  local bottomCorner
-  topCorner="${setColorLine}${topCornerChar}"
-  middleToBottom=$'%{\e[A\r'"%}${setColorLine}${middleToBottomChar}{"$'\e[B%}' # This is a cute hack. () Well I like it, anyway.
-  bottomCorner="${setColorLine}${bottomCornerChar}"
+  topCorner="${colorLine}${topCornerChar}"
+  middleToBottom=$'%{\e[A\r'"%}${colorLine}${middleToBottomChar}{"$'\e[B%}' # This is a cute hack. () Well I like it, anyway.
+  bottomCorner="${colorLine}${bottomCornerChar}"
 
   vcsStatus="$(git_current_branch)"
-  coloredPath="${colorPath}%~${setColorLine}"
+  coloredPath="${colorPath}%~${colorLine}"
   lineTopLeft="${topCorner}${hyphenChar}┤${coloredPath}├"
 
-  user_host="${colorUser}%n${setColorLine}@${colorUser}%m${setColorLine}"
-  lineTopRight="┤${user_host}├${lineEnd}"
+  user_host="${colorUser}%n${colorLine}@${colorUser}%m${colorLine}"
+  time="${colorUser}%*${colorLine}"
+  lineTopRight="┤${user_host}│${time}├${lineEnd}"
 
   lineBottom="${bottomCorner}${hyphenChar}"
 
