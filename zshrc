@@ -1,18 +1,16 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/ber/.zsh/oh-my-zsh
+  export ZSH=~/.zsh/oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 autoload -U promptinit && promptinit
-if [[ $(hostname) == "berli" ]]; then
-    color1="yellow";
-else
-    color1="cyan";
-fi
-ZSH_THEME="robbyrussell"
-ZSH_THEME="lambda (mod)"
+# if [[ $(hostname) == "berli" ]]; then
+#     color1="yellow";
+# else
+#     color1="cyan";
+# fi
 ZSH_THEME="adam3"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -109,7 +107,7 @@ autoload -Uz bashcompinit && bashcompinit
 kitty + complete setup zsh | source /dev/stdin
 
 # make file/directory mine
-alias mine="sudo chown --changes --recursive $(id -un):$(id -gn)"
+alias mine='sudo chown --changes --recursive $(id -un):$(id -gn)'
 
 # header anzeigen
 alias -g _header="tee >(tput smso; head -1 | cat; tput rmso) | cat"
@@ -176,10 +174,8 @@ function exit-terminal {
 zle -N exit-terminal
 bindkey '^[OS' exit-terminal
 
-alias unlock="DISPLAY=:0 cinnamon-screensaver-command -d"
-
 # alias LS
-alias -g ls=exa
+alias -g ls='exa --icons'
 
 # PHPCS
 alias phpcsProject="phpcs -s . --extensions=php | rg -v '(Squiz.Commenting.VariableComment.Missing)' | rg FILE -A 2 | rg -v -- '--------------------'"
