@@ -1,0 +1,11 @@
+set atblanks
+set autoindent
+set constantshow
+set nonewlines
+set regexp
+set smarthome
+set smooth
+set softwrap
+set tabsize 4
+set tabstospaces
+set trimblanks

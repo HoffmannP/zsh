@@ -114,7 +114,7 @@ kitty + complete setup zsh | source /dev/stdin
 alias wakeup="/usr/bin/wakeonlan BC:5F:F4:79:71:18"
 
 # make file/directory mine
-alias mine="sudo chown --changes --recursive $(id -un):$(id -gn)"
+alias mine='sudo chown --changes --recursive $(id -un):$(id -gn)'
 
 # header anzeigen
 alias -g _header="tee >(tput smso; head -1 | cat; tput rmso) | cat"
@@ -136,15 +136,6 @@ LESS="-FKRX"
 alias aus="sudo poweroff"
 
 # Keybindings
-# F1
-function list-dir {
-	ls -l
-	echo
-	zle reset-prompt
-}
-zle -N list-dir
-bindkey '^[OP' list-dir
-
 # F4
 function exit-terminal {
 	clearLines=$[(LINES - 7) / 2];

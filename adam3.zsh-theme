@@ -20,7 +20,7 @@ EOF
 
 prompt_adam3_setup () {
   # Some can't be local
-  local topLeftCorner  middleToBottomChar bottomLeftCorner
+  local topLeftCorner  middleToBottomChar bottomLeftCorner bottomCorner
 
   topCornerChar='╭'
   bottomCornerChar='╰'
