@@ -1,18 +1,14 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/ber/.zsh/oh-my-zsh
+export ZSH=~/.zsh/oh-my-zsh
+
+export TERM=xterm
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 autoload -U promptinit && promptinit
-if [[ $(hostname) == "berli" ]]; then
-    color1="yellow";
-else
-    color1="cyan";
-fi
-ZSH_THEME="robbyrussell"
-ZSH_THEME="lambda (mod)"
+
 ZSH_THEME="adam3"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -53,7 +49,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(colored-man-pages colorize command-not-found compleat docker git golang)
+plugins=(colored-man-pages colorize command-not-found compleat docker git golang ssh-agent)
 
 # User configuration
 
@@ -61,6 +57,8 @@ plugins=(colored-man-pages colorize command-not-found compleat docker git golang
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
 
 # You may need to manually set your language environment
 export LANG=de_DE.UTF-8
@@ -78,8 +76,11 @@ export EDITOR='nano'
 tabs 4 > /dev/null
 
 # settings for GO
-export GOPATH="$HOME/Code/go"
-export PATH="$PATH:$GOPATH/bin"
+# export GOPATH="$HOME/Code/go"
+# export PATH="$PATH:$GOPATH/bin"
+
+# GPG homedir
+export GNUPGHOME=/home/p2lebe/Dropbox/Schluessel/gpg-conf
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -87,20 +88,12 @@ export PATH="$PATH:$GOPATH/bin"
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# GPG homedir
-export GNUPGHOME=/home/ber/Dropbox/Schluessel/gpg-conf
+# Alias for cat
+alias cat=bat
 
 # short for exit
 alias xit=exit
-
-# alias for rmate
-alias rsubl=rmate
-
-# play atmospheriy sound
-alias atmo="play -n -c1 synth whitenoise band -n 100 20 band -n 50 20 gain +30 fade h 1 86400 1"
 
 # apt-get update upgrade
 alias -g update-upgrade="apt update && apt upgrade"
@@ -108,10 +101,14 @@ alias -g update-upgrade="apt update && apt upgrade"
 # ldap un-base64
 alias un64='awk '\''BEGIN{FS=":: ";c="base64 -d"}{if(/\w+:: /) {print $2 |& c; close(c,"to"); c |& getline $2; close(c); printf("%s: %s\n", $1, $2); next} print $0 }'\'''
 
+# nice image viewer
+alias -g xpic="feh -r -Z -F -Y" .
+
 # add custom completion scripts
 fpath+="$HOME/.zsh/completion"
 autoload -Uz compinit && compinit -i
 autoload -Uz bashcompinit && bashcompinit
+kitty + complete setup zsh | source /dev/stdin
 
 # wakeup Server
 alias wakeup="/usr/bin/wakeonlan BC:5F:F4:79:71:18"
@@ -136,11 +133,7 @@ function newProject {
 # set Options for LESS
 LESS="-FKRX"
 
-# local webserver
-alias webserver="docker run --name local-webserver --publish 80:80 --volume "/home/ber/Code:/usr/share/nginx/html:ro" -d nginx"
-
 alias aus="sudo poweroff"
-alias beKatja="sudo macchanger -m 50:F0:D3:14:84:5A wlp3s0"
 
 # Keybindings
 # F1
@@ -197,50 +190,35 @@ function exit-terminal {
 zle -N exit-terminal
 bindkey '^[OS' exit-terminal
 
-# F5
-function exec-last-cmd {
-	$(fc -ln -1)
-	echo
-	zle reset-prompt
-}
-zle -N exec-last-cmd
-bindkey '^[[15~' exec-last-cmd
-
-# F6
-function show-time {
-	clear
-	for ((i=0; i<5; i++)); do
-		echo
-	done
-	banner '     '$(date +%R)
-	for ((i=0; i<5; i++)); do
-		echo
-	done
-	echo
-	zle reset-prompt
-}
-zle -N show-time
-bindkey '^[[17~' show-time
-
-# F8
-function run-as-sudo {
-	sudo $(fc -ln -1)
-	echo
-	zle reset-prompt
-}
-zle -N run-as-sudo
-bindkey '^[19' run-as-sudo
-
-function letitsnow {
-	clear
-	while true
-	do
-		echo $LINES $COLUMNS $(($RANDOM%$COLUMNS))
-		sleep 0.1
-	done | gawk '{a[$3]=0;for(x in a) {o=a[x];a[x]=a[x]+1;printf "\033[%s;%sH ",o,x;printf "\033[%s;%sH*\033[0;0H",a[x],x;}}'
-}
+# alias LS
+alias ls='exa --icons'
 
 alias unlock="DISPLAY=:0 cinnamon-screensaver-command -d"
 
-hash -d kt="$HOME/Code/Kompetenztest/"
-source ~/.zsh/arbeit.sh
+# Node Version Management
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Create key/cert
+alias sslKey="openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem"
+
+PATH=$PATH:$HOME/.local/bin
+
+# Kitty
+alias icat="kitty +kitten icat"
+alias idiff="kitty +kitten diff"
+function iplot {
+    cat <<EOF | gnuplot
+    set terminal pngcairo enhanced font 'Fira Sans,10'
+    set autoscale
+    set samples 1000
+    set output '|kitty +kitten icat --stdin yes'
+    set object 1 rectangle from screen 0,0 to screen 1,1 fillcolor rgb"#fdf6e3" behind
+    plot $@
+    set output '/dev/null'
+EOF
+}
+
+alias sesam_oeffne_dich="sudo veracrypt -t ~/Lehrcloud/Space -k '' --pim=0 --protect-hidden=no /media/veracrypt1"
+alias sesam_schliesse_dich="sudo veracrypt -t -d ~/Lehrcloud/Space"

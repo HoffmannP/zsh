@@ -29,24 +29,25 @@ prompt_adam3_setup () {
   lineEnd='─╌┄┈'
 
   # Color scheme
-  setColorLine="%b%{$FG[055]%}"
-
-  # colorPath="%b%{$FG[237]%}"
-  colorPath="%b%{$FG[226]%}"
+  lineColor=055
+  pathColor=226 #237
   hostColor="$(printf %03d $(hostname | md5sum | sed -r 's/^.*(..)  -/0x\1/'))"
+
+  colorLine="%b%{$FG[$lineColor]%}"
+  colorPath="%b%{$FG[$pathColor]%}"
   colorUser="%b%{$FG[$hostColor]%}"
 
-  local bottomCorner
-  topCorner="${setColorLine}${topCornerChar}"
-  middleToBottom=$'%{\e[A\r'"%}${setColorLine}${middleToBottomChar}{"$'\e[B%}' # This is a cute hack. () Well I like it, anyway.
-  bottomCorner="${setColorLine}${bottomCornerChar}"
+  topCorner="${colorLine}${topCornerChar}"
+  middleToBottom=$'%{\e[A\r'"%}${colorLine}${middleToBottomChar}{"$'\e[B%}' # This is a cute hack. () Well I like it, anyway.
+  bottomCorner="${colorLine}${bottomCornerChar}"
 
   vcsStatus="$(git_current_branch)"
-  coloredPath="${colorPath}%~${setColorLine}"
+  coloredPath="${colorPath}%~${colorLine}"
   lineTopLeft="${topCorner}${hyphenChar}┤${coloredPath}├"
 
-  user_host="${colorUser}%n${setColorLine}@${colorUser}%m${setColorLine}"
-  lineTopRight="┤${user_host}├${lineEnd}"
+  user_host="${colorUser}%n${colorLine}@${colorUser}%m${colorLine}"
+  time="${colorUser}%*${colorLine}"
+  lineTopRight="┤${user_host}│${time}├${lineEnd}"
 
   lineBottom="${bottomCorner}${hyphenChar}"
 
@@ -89,13 +90,13 @@ prompt_adam3_git() {
   ZSH_THEME_GIT_PROMPT_PREFIX="┤<"
   ZSH_THEME_GIT_PROMPT_SUFFIX="├"
   DISABLE_UNTRACKED_FILES_DIRTY="true"
-  ZSH_THEME_GIT_PROMPT_DIRTY="${setDirtyColor}⚒ ${setColorLine}"
+  ZSH_THEME_GIT_PROMPT_DIRTY="${setDirtyColor}⚒ ${colorLine}"
   ZSH_THEME_GIT_PROMPT_CLEAN=""
-  ZSH_THEME_GIT_PROMPT_UNTRACKED="⬚ "
-  # ZSH_THEME_GIT_PROMPT_STAGED="▢ "
-  ZSH_THEME_GIT_PROMPT_STASHED="▣ "
+  ZSH_THEME_GIT_PROMPT_UNTRACKED="+ "
+  # ZSH_THEME_GIT_PROMPT_STAGED="⊕ "
+  ZSH_THEME_GIT_PROMPT_STASHED="⨄ "
 
-  lineTopMiddle="┤$(parse_git_dirty)${colorPath}<$(git_current_branch)>${setColorLine}$(git_prompt_status)├"
+  lineTopMiddle="┤$(parse_git_dirty)${colorPath}<$(git_current_branch)>${colorLine}$(git_prompt_status)├"
 }
 
 prompt_adam3_choose_prompt () {
@@ -142,7 +143,7 @@ prompt_adam3_choose_prompt () {
   # Still didn't fit; truncate
   local prompt_pwd_size=$[ COLUMNS - 7 ]
   # What does %${prompt_pwd_size}<...<%~%<< mean?
-  lineTop="${topCorner}${hyphenChar}┤${colorPath}%${prompt_pwd_size}<…<%~%<<${setColorLine}├${lineEnd}"
+  lineTop="${topCorner}${hyphenChar}┤${colorPath}%${prompt_pwd_size}<…<%~%<<${colorLine}├${lineEnd}"
 }
 
 prompt_adam3_setup "$@"
