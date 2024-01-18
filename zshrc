@@ -213,3 +213,20 @@ EOF
 
 alias sesam_oeffne_dich="sudo veracrypt -t ~/Lehrcloud/Space -k '' --pim=0 --protect-hidden=no /media/veracrypt1"
 alias sesam_schliesse_dich="sudo veracrypt -t -d ~/Lehrcloud/Space"
+
+# Killall zum beenden der Kinder-Sessions
+function beende {
+	kinder=(leander linus laurin)
+	name=$1
+	if [[ $kinder[(Ie)$name] -eq 0 ]]
+	then
+		echo "Session for '$name' cannot be ended" >&2
+	else
+		echo "Ending session for '$name'"
+		sudo -u $name killall -u $name
+	fi
+}
+
+function minecraft_time {
+	ps auxf | rg java | rg minecraft | tr -s ' ' "\t" | cut -f 10
+}
